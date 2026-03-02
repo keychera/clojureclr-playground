@@ -1,7 +1,11 @@
-(ns matsu.core)
+(ns matsu.core
+  (:require [clojure.tools.nrepl :as nrepl]))
 
 (defn -main []
-  (println "hello clojure-clr!"))
+  (println "hello clojure-clr!")
+  (let [port 12420]
+    (spit ".nrepl-port" port)
+    (nrepl/start-server! {:host "127.0.0.1" :port port})))
 
 (comment
 
