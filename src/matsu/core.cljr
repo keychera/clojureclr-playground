@@ -1,0 +1,8 @@
+(ns matsu.core)
+
+(defn -main []
+  (println "hello clojure-clr!"))
+
+(comment
+
+  ::waiting-for-something-to-happen?)

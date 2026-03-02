@@ -1,5 +1,6 @@
 # clj clr
 
+## first steps
 ```sh
 # 1. download dotnet from official web
 
@@ -36,3 +37,23 @@ Clojure.Main
 
 
 ```
+
+
+## first deps
+
+https://blog.agical.se/en/posts/how-to-create-a-really-simple-clojureclr-dependency-tool/
+
+https://github.com/keychera/thorbox-clj/blob/main/equipment/lets.clj
+
+will rely on [tools.bbuild](https://github.com/babashka/tools.bbuild)
+
+double bb
+
+```sh
+bb -x lets/clr
+# running clojure-clr pseudo deps.edn project
+# Clojure core loaded in 225 milliseconds.
+# hello clojure-clr!
+```
+
+lets go
