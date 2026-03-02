@@ -1,5 +1,6 @@
 (ns matsu.core
-  (:require [clojure.tools.nrepl :as nrepl]))
+  (:require [clojure.tools.nrepl :as nrepl]
+            [odoyle.rules :as o]))
 
 (defn -main []
   (println "hello clojure-clr!")
@@ -8,5 +9,29 @@
     (nrepl/start-server! {:host "127.0.0.1" :port port})))
 
 (comment
+  (let [rules
+        (o/ruleset
+         {::player
+          [:what
+           [::player ::health health]
+           [::player ::defense defense]]
+
+          ::attack-player
+          [:what
+           [::player ::health health {:then false}]
+           [::player ::defense defense]
+           [attack-id ::damage damage]
+           :then
+           (let [damaged-health (- health (- damage defense))]
+             (-> session
+                 (o/retract attack-id ::damage)
+                 (o/insert ::player ::health damaged-health)
+                 (o/reset!)))]})]
+    (-> (reduce o/add-rule (o/->session) rules)
+        (o/insert ::player ::health 100)
+        (o/insert ::player ::defense 10)
+        (o/insert ::from-out-there ::damage 100)
+        (o/fire-rules)
+        (o/query-all ::player)))
 
   ::waiting-for-something-to-happen?)

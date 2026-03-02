@@ -1,2 +1,4 @@
 {:paths ["src"]
- :deps {io.github.clojure/clr.tools.nrepl {:git/tag "v0.1.2-alpha2" :git/sha "a58009f"}}}
+ :deps  {io.github.clojure/clr.tools.nrepl {:git/tag "v0.1.2-alpha2" :git/sha "a58009f"}
+         io.github.clojure/clr.spec.alpha  {:git/tag "v0.5.238"  :git/sha "1cfe4af"}
+         io.github.keychera/odoyle-rules   {:git/sha "408b89dc94291b23a5385cc45b07893830415856"}}}
