@@ -1,4 +1,4 @@
-(ns lets
+(ns equipment.lets
   (:require
    [babashka.fs :as fs]
    [clojure.string :as str]
@@ -17,19 +17,26 @@
     (fs/unzip jar-path deps-dir {:replace-existing true})
     deps-dir))
 
-(defn clr [& _]
-  (println "running clojure-clr pseudo deps.edn project")
+(defn clr
+  {:org.babashka/cli {:exec-args {:prep? false}
+                      :coerce {:prep? :bool}}}
+  [{:keys [prep?] :as opts}]
+  (println "setting up clojure-clr pseudo deps.edn project\n  with ops:" opts)
   (let [classpath (into []
-                        (map (fn [path]
-                               (if (str/ends-with? path ".jar")
-                                 (unpack-jar path)
-                                 path)))
+                        (map (if prep?
+                               (fn [path]
+                                 (if (str/ends-with? path ".jar")
+                                   (unpack-jar path)
+                                   path))
+                               identity))
                         (keys (:classpath @deps-basis)))
         LOAD_PATH (str/join File/pathSeparator classpath)]
-    (try
-      (b/process {:command-args ["clj-kondo" "--lint" LOAD_PATH
-                                 "--dependencies" "--copy-configs" "--skip-lint"]})
-      (catch Throwable err
-        (println "error when running clj-kondo! cause:" (:cause (Throwable->map err)))))
+    (when prep?
+      (try
+        (b/process {:command-args ["clj-kondo" "--lint" LOAD_PATH
+                                   "--dependencies" "--copy-configs" "--skip-lint"]})
+        (catch Throwable err
+          (println "error when running clj-kondo! cause:" (:cause (Throwable->map err))))))
+    (println "running clojure-clr repl!")
     (b/process {:env {"CLOJURE_LOAD_PATH" LOAD_PATH}
                 :command-args ["Clojure.Main.exe" "-m" "matsu.core"]})))

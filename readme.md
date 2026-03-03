@@ -57,3 +57,17 @@ bb -x lets/clr
 ```
 
 lets go
+
+## now changed to bb task
+
+first time prep
+
+```sh
+bb letsgo :prep?
+```
+
+run repl only
+
+```sh
+bb letsgo
+```
