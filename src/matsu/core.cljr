@@ -9,6 +9,29 @@
     (nrepl/start-server! {:host "127.0.0.1" :port port})))
 
 (comment
+  (import '[System Console]
+          '[System.Linq Enumerable])
+  (Console/WriteLine "hello CLR")
+
+  (let [nums (-> (range 42)
+                 (Enumerable/Where even?)
+                 (Enumerable/Select #(* % 10)))]
+    (seq nums))
+
+  (-> (range 42)
+      (Enumerable/Where even?)
+      even?)
+
+  (even? Enumerable/Where) ;; error as expected
+  (even? [1 2]) ;; error as expected
+  (def thats [1 2 3])
+  (Enumerable/Where thats odd?)
+  (seq *1)
+  (Enumerable/Where any?) ;; this one hangs the repl
+  (Enumerable/Where [1 2] nil) ;; this also hangs the repl
+
+  (+ 42 39)
+
   (let [rules
         (o/ruleset
          {::player
